@@ -1,0 +1,8 @@
+apiVersion: v2
+name: orchestrator
+version: 1.0
+description: The Orchestrator component of the INCISIVE platform. It is the one in charge of managing the placement and behaviour of all AI Engines' executions.
+type: application
+appVersion: "2nd-Prototype"
+annotations:
+  requiredImages: orchestrator, processor-resource-manager, federated-learning-manager

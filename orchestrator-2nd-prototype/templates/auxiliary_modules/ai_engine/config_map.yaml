@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ai-engine-config{{ .Values.prototypeSignature }}
+  labels:
+    app: orchestrator{{ .Values.prototypeSignature }}
+    module: ai-engine{{ .Values.prototypeSignature }}
+data:
+  platform_vars.json: |
+    {
+      "input_data_training": {
+        "tabular": "{{ .Values.plaformVarsInputDataTrainingTabular }}",
+        "imagery": "{{ .Values.plaformVarsInputDataTrainingImagery }}"
+      },
+      "input_data_evaluation": {
+        "tabular": "{{ .Values.plaformVarsInputDataEvaluationTabular }}",
+        "imagery": "{{ .Values.plaformVarsInputDataEvaluationImagery }}"
+      },
+      "input_data_inference": {
+        "breast": {
+          "raw": "{{ .Values.plaformVarsInputDataInference }}/raw",
+          "birads-classification": "{{ .Values.plaformVarsInputDataInference }}/birads-classification",
+          "birads-classification-xai": "{{ .Values.plaformVarsInputDataInference }}/birads-classification-xai",
+          "density-classification": "{{ .Values.plaformVarsInputDataInference }}/density-classification",
+          "density-classification-xai": "{{ .Values.plaformVarsInputDataInference }}/density-classification-xai",
+          "segmentation": "{{ .Values.plaformVarsInputDataInference }}/segmentation",
+          "prioritization": "{{ .Values.plaformVarsInputDataInference }}/prioritization",
+          "localization": "{{ .Values.plaformVarsInputDataInference }}/localization"
+        },
+        "lung": {
+          "raw": "{{ .Values.plaformVarsInputDataInference }}/raw",
+          "staging-classification": "{{ .Values.plaformVarsInputDataInference }}/staging-classification",
+          "staging-classification-xai": "{{ .Values.plaformVarsInputDataInference }}/staging-classification-xai",
+          "metastasis-risk-classification": "{{ .Values.plaformVarsInputDataInference }}/metastasis-risk-classification",
+          "metastasis-risk-classification-xai": "{{ .Values.plaformVarsInputDataInference }}/metastasis-risk-classification-xai",
+          "classification": "{{ .Values.plaformVarsInputDataInference }}/classification",
+          "segmentation": "{{ .Values.plaformVarsInputDataInference }}/segmentation",
+          "localization": "{{ .Values.plaformVarsInputDataInference }}/localization",
+          "prioritization": "{{ .Values.plaformVarsInputDataInference }}/prioritization"
+        },
+        "colorectal": {
+          "raw": "{{ .Values.plaformVarsInputDataInference }}/raw",
+          "segmentation": "{{ .Values.plaformVarsInputDataInference }}/segmentation",
+          "localization": "{{ .Values.plaformVarsInputDataInference }}/localization",
+          "prioritization": "{{ .Values.plaformVarsInputDataInference }}/prioritization"
+        },
+        "prostate": {
+          "raw": "{{ .Values.plaformVarsInputDataInference }}/raw",
+          "isup-score-classification": "{{ .Values.plaformVarsInputDataInference }}/isup-score-classification",
+          "isup-score-classification-xai": "{{ .Values.plaformVarsInputDataInference }}/isup-score-classification-xai",
+          "lesion-prioritization": "{{ .Values.plaformVarsInputDataInference }}/lesion-prioritization",
+          "lesion-localization": "{{ .Values.plaformVarsInputDataInference }}/lesion-localization",
+          "lesion-segmentation": "{{ .Values.plaformVarsInputDataInference }}/lesion-segmentation",
+          "gland-segmentation": "{{ .Values.plaformVarsInputDataInference }}/gland-segmentation"
+        }
+      },
+      "input_report_metadata": "{{ .Values.plaformVarsInputDataInferenceReportMetadata }}",
+      "input_user_vars": "{{ .Values.plaformVarsInputUserVars }}",
+      "input_model": "{{ .Values.plaformVarsInputModel }}",
+      "input_models": "{{ .Values.plaformVarsInputModels }}",
+      "output_model": "{{ .Values.plaformVarsOutputModel }}",
+      "output_evaluation_results": "{{ .Values.plaformVarsOutputEvaluationMetrics }}",
+      "output_inference_results": "{{ .Values.plaformVarsOutputInferenceResults }}",
+      "api_ping_url": "{{ .Values.plaformVarsApiPingUrl }}",
+      "api_run_url": "{{ .Values.plaformVarsApiRunUrl }}",
+      "api_end_url": "{{ .Values.plaformVarsApiEndUrl }}",
+      "api_host": "{{ .Values.plaformVarsApiHost }}",
+      "api_port": "{{ .Values.plaformVarsApiPort }}"
+    }

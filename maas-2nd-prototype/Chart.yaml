@@ -1,0 +1,8 @@
+apiVersion: v2
+name: maas
+version: 1.0
+description: The MaaS component of the INCISIVE platform. It is the one in charge of providing the backend to the distinct organizations for storing and retrieving their AI Engines and models along their metadata.
+type: application
+appVersion: "2nd-Prototype"
+annotations:
+  requiredImages: maas

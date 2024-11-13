@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maas-service{{ .Values.prototypeSignature }}
+  labels:
+    app: maas{{ .Values.prototypeSignature }}
+    module: maas-service{{ .Values.prototypeSignature }}
+spec:
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      module: maas-service{{ .Values.prototypeSignature }}
+  template:
+    metadata:
+      labels:
+        app: maas{{ .Values.prototypeSignature }}
+        module: maas-service{{ .Values.prototypeSignature }}
+    spec:
+      serviceAccountName: maas-service-account{{ .Values.prototypeSignature }}
+      containers:
+        - name: maas-service
+          image: "{{ .Values.componentsImageRepository }}/maas:{{ .Values.maasImageVersion }}"
+          envFrom:
+            - secretRef:
+                name: maas-service-secret{{ .Values.prototypeSignature }}
+            - configMapRef:
+                name: maas-service-config{{ .Values.prototypeSignature }}
+          ports:
+            - name: maas-service
+              containerPort: 8000
+          volumeMounts:
+            - name: maas-service-files-storage
+              mountPath: /usr/application/storage
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+      initContainers:
+        - name: maas-service-migrate
+          image: "{{ .Values.componentsImageRepository }}/maas:{{ .Values.maasImageVersion }}"
+          envFrom:
+            - secretRef:
+                name: maas-service-secret{{ .Values.prototypeSignature }}
+            - configMapRef:
+                name: maas-service-config{{ .Values.prototypeSignature }}
+          volumeMounts:
+            - name: maas-service-files-storage
+              mountPath: /usr/application/storage
+          command: ["python3", "manage.py", "migrate"]
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+      volumes:
+        - name: maas-service-files-storage
+          persistentVolumeClaim:
+            claimName: maas-service-files-storage{{ .Values.prototypeSignature }}

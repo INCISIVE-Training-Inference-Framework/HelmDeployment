@@ -1,0 +1,63 @@
+{{- if eq .Values.localInference.enabled true}}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: orchestrator-local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+{{- end }}
+{{- if eq .Values.localInference.enabled true}}
+{{- with .Values.localInference}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: orchestrator-service-pv-{{ .hostname }}
+spec:
+  capacity:
+    storage: 10Gi 
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: orchestrator-local-storage
+  #local:
+  hostPath:
+    path: "{{ .hostPath }}/orchestrator/files-storage"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - {{ .hostname }}
+{{- end }}
+---
+{{- end }}
+{{- if eq .Values.localInference.enabled true}}
+{{- with .Values.localInference}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: orchestrator-database-pv-{{ .hostname }}
+spec:
+  capacity:
+    storage: 10Gi 
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: orchestrator-local-storage
+  #local:
+  hostPath:
+    path: "{{ .hostPath }}/orchestrator/database"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - {{ .hostname }}
+{{- end }}
+---
+{{- end }}

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maas-database{{ .Values.prototypeSignature }}
+  labels:
+    app: maas{{ .Values.prototypeSignature }}
+    module: maas-database{{ .Values.prototypeSignature }}
+spec:
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      module: maas-database{{ .Values.prototypeSignature }}
+  template:
+    metadata:
+      labels:
+        app: maas{{ .Values.prototypeSignature }}
+        module: maas-database{{ .Values.prototypeSignature }}
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:12.14
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: maas-database-secret{{ .Values.prototypeSignature }}
+            - configMapRef:
+                name: maas-database-config{{ .Values.prototypeSignature }}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: maas-database
+          resources:
+            requests:
+              cpu: 125m
+              memory: 500Mi
+            limits:
+              cpu: 1000m
+              memory: 500Mi
+      volumes:
+        - name: maas-database
+          persistentVolumeClaim:
+            claimName: maas-database{{ .Values.prototypeSignature }}

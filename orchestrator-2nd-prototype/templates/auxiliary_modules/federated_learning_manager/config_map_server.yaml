@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: federated-learning-manager-server{{ .Values.prototypeSignature }}
+  labels:
+    app: orchestrator{{ .Values.prototypeSignature }}
+    module: federated-learning-manager{{ .Values.prototypeSignature }}
+data:
+  COMMUNICATION_ADAPTER: "KAFKA"
+  AI_ENGINE_LINKAGE_ADAPTER: "ASYNC_REST_API"
+  AI_ENGINE_MODEL_MANAGEMENT_ADAPTER: "DEFAULT"
+  PLATFORM_ADAPTER: "INCISIVE"
+  
+  COMMUNICATION_ADAPTER_BOOTSTRAP_SERVERS_CONFIG: "{{ .Values.kafkaBootstrapServers }}"
+  COMMUNICATION_ADAPTER_POLL_TIME_OUT: "60"
+  COMMUNICATION_ADAPTER_MAX_INITIALIZATION_TIME: "{{ .Values.maxInitTime }}"
+  COMMUNICATION_ADAPTER_MAX_ITERATION_TIME: "{{ .Values.maxIterationTime }}"
+  COMMUNICATION_ADAPTER_MAX_MODEL_SIZE: "{{ .Values.maxModelSize }}"
+  
+  AI_ENGINE_LINKAGE_ADAPTER_MAX_ITERATION_TIME: "{{ .Values.maxIterationTime }}"
+  AI_ENGINE_LINKAGE_ADAPTER_MAX_INITIALIZATION_TIME: "240"
+  AI_ENGINE_LINKAGE_ADAPTER_MAX_FINALIZATION_TIME: "30"
+  AI_ENGINE_LINKAGE_ADAPTER_MAX_FINALIZATION_RETRIES: "4"  
+  AI_ENGINE_LINKAGE_ADAPTER_CLIENT_HOST: "{{ .Values.plaformVarsApiHost }}:{{ .Values.plaformVarsApiPort }}"
+  AI_ENGINE_LINKAGE_ADAPTER_SERVER_HOST: "{{ .Values.processorResourceManagerApiHost }}"
+  AI_ENGINE_LINKAGE_ADAPTER_PING_URL: "{{ .Values.plaformVarsApiPingUrl }}"
+  AI_ENGINE_LINKAGE_ADAPTER_RUN_URL: "{{ .Values.plaformVarsApiRunUrl }}"
+  AI_ENGINE_LINKAGE_ADAPTER_END_URL: "{{ .Values.plaformVarsApiEndUrl }}"
+  AI_ENGINE_LINKAGE_ADAPTER_CALLBACK_URL: "{{ .Values.processorResourceManagerCallbackUrl }}"
+  
+  AI_ENGINE_MODEL_MANAGEMENT_ADAPTER_INPUT_UNMERGED_MODELS_DIRECTORY_PATH: "{{ .Values.plaformVarsInputModels }}"
+  AI_ENGINE_MODEL_MANAGEMENT_ADAPTER_OUTPUT_MERGED_MODEL_PATH: "{{ .Values.plaformVarsOutputModel }}"
+  AI_ENGINE_MODEL_MANAGEMENT_ADAPTER_INPUT_EVALUATION_METRICS_DIRECTORY_PATH: "{{ .Values.plaformVarsOutputEvaluationMetricsMultiple }}"

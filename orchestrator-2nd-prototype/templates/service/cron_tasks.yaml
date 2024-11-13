@@ -1,0 +1,38 @@
+{{- if eq .Values.localInference.enabled false }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: orchestrator-service-cron{{ .Values.prototypeSignature }}
+  labels:
+    app: orchestrator{{ .Values.prototypeSignature }}
+    module: orchestrator-service{{ .Values.prototypeSignature }}
+spec:
+  schedule: "0-59/5 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          serviceAccountName: orchestrator-service-account{{ .Values.prototypeSignature }}
+          nodeSelector: {"{{ .Values.cloudNodeLabelKey }}": "{{ .Values.cloudNodeLabelValue }}"}
+          restartPolicy: Never
+          containers:
+          - name: orchestrator-service-tasks
+            image: "{{ .Values.componentsImageRepository }}/orchestrator:{{ .Values.orchestratorImageVersion }}"
+            command: ["python3", "manage.py", "clean_old_kafka_topics"]
+            envFrom:
+            - secretRef:
+                name: orchestrator-service-secret{{ .Values.prototypeSignature }}
+            - configMapRef:
+                name: orchestrator-service-config{{ .Values.prototypeSignature }}
+            resources:
+              requests:
+                cpu: 250m
+                memory: 512Mi
+              limits:
+                cpu: 1000m
+                memory: 512Mi
+{{- end }} 

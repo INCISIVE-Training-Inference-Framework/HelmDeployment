@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: maas-database{{ .Values.prototypeSignature }}
+  labels:
+    app: maas{{ .Values.prototypeSignature }}
+    module: maas-database{{ .Values.prototypeSignature }}
+spec:
+  selector:
+    module: maas-database{{ .Values.prototypeSignature }}
+  ports:
+    - port: 5432
+      targetPort: 5432

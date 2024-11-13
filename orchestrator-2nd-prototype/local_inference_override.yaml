@@ -1,0 +1,13 @@
+centralNodeLabelKey: "kubernetes.io/hostname"
+centralNodeLabelValue: "visaris-rm2"
+
+# Platform values
+prototypeSignature: "-2nd-prototype-local-inference"
+
+# local inference
+localInference:
+  enabled: true
+  hostPath: "/tmp/local_inference"
+  hostname: "visaris-rm2"
+  namespace: "visaris-rm2"
+  

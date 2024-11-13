@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: maas-service-config{{ .Values.prototypeSignature }}
+  labels:
+    app: maas{{ .Values.prototypeSignature }}
+    module: maas-service{{ .Values.prototypeSignature }}
+data:
+  DEBUG: "False"
+  DATABASE_ENGINE: "postgresql"
+  DATABASE_NAME: "maas"
+  DATABASE_HOST: "maas-database{{ .Values.prototypeSignature }}"
+  DATABASE_PORT: "5432"
+  ALLOWED_HOSTS: "maas-service{{ .Values.prototypeSignature }},maas-service{{ .Values.prototypeSignature }}.{{ .Release.Namespace }}.svc.cluster.local"
+  VALID_DATA_PARTNERS: "uns,uns-rm2,auth,auth-rm2,uoa,uoa-rm2,hcs-rm2"
+  VALID_AI_ENGINE_DATA_TYPES: "breast_cancer_mammography,breast_cancer_mri,lung_cancer_x_ray,lung_cancer_ct_scan,lung_cancer_pet_ct_scan,colorectal_cancer_mri,colorectal_cancer_he_stain,prostate_cancer_mri"
+  VALID_AI_ENGINE_ROLE_TYPES: "classification,segmentation,report_generation,xai,localization,prioritization"
+  GUNICORN_CMD_ARGS: "--bind :8000 --workers {{ .Values.maasWorkers }} --timeout {{ .Values.maasWorkersTimeout }}"
+

@@ -1,0 +1,54 @@
+prototypeSignature: "-2nd-prototype"
+
+aiEnginesImageRepository: "incisive.azurecr.io"
+componentsImageRepository: "incisive.azurecr.io"
+cloudNodeLabelKey: "agentpool"
+cloudNodeLabelValue: "agentpool"
+centralNodeLabelKey: "fakeCloudNode"
+centralNodeLabelValue: "fakeCloudNode"
+databaseUsername: "databaseUsername"
+databasePassword: "databasePassword"
+serviceSecretKey: "serviceSecretKey"
+storageClassName: "managed-premium"
+
+maxModelSize: "1000000"  # KB
+maxIterationTime: "7200"  # s
+maxInitTime: "600" # s 
+kafkaBootstrapServers: "kafka-cluster-kafka-bootstrap.kafka:9092"
+
+# image versions
+orchestratorImageVersion: "2.2.0"
+processorResourceManagerImageVersion: "2.2.0"
+federatedLearningManagerImageVersion: "2.0.1-alpha.3"
+
+# AI Engine platform vars
+plaformVarsInputElements: "/tmp/input_elements/"
+plaformVarsInputDataTrainingTabular: "/tmp/input_elements/internal_data/tabular"
+plaformVarsInputDataTrainingImagery: "/tmp/input_elements/internal_data/imagery"
+plaformVarsInputDataEvaluationTabular: "/tmp/input_elements/internal_data/tabular"
+plaformVarsInputDataEvaluationImagery: "/tmp/input_elements/internal_data/imagery"
+plaformVarsInputDataInference: "/tmp/input_elements/external_data/"
+plaformVarsInputDataInferenceReportMetadata: "/tmp/input_elements/external_data/report_metadata.json"
+plaformVarsAIElements: "/tmp/ai_elements/"
+plaformVarsInputUserVars: "/tmp/ai_elements/ai_engine_version_user_vars.json"
+plaformVarsInputModel: "/tmp/ai_elements/ai_model/"
+plaformVarsInputModels: "/tmp/ai_elements/ai_models/"
+plaformVarsOutputElements: "/tmp/output_elements/"
+plaformVarsOutputModel: "/tmp/output_elements/ai_model/"
+plaformVarsOutputEvaluationMetrics: "/tmp/output_elements/evaluation_metrics.json"
+plaformVarsOutputEvaluationMetricsMultiple: "/tmp/output_elements/evaluation_metrics/"
+plaformVarsOutputInferenceResults: "/tmp/output_elements/generic_file/"
+plaformVarsApiPingUrl: "/api/ping"
+plaformVarsApiRunUrl: "/api/run"
+plaformVarsApiEndUrl: "/api/end"
+plaformVarsApiHost: "127.0.0.1"
+plaformVarsApiPort: "8001"
+
+# other
+processorResourceManagerApiHost: "127.0.0.1:8000"
+processorResourceManagerCallbackUrl: "/api/callback"
+
+# local inference
+localInference:
+  enabled: false
+  

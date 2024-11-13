@@ -1,0 +1,9 @@
+# Platform values
+prototypeSignature: "-2nd-prototype-local-inference"
+# Local inference values
+localInference:
+  enabled: true
+  hostPath: "/tmp/local_inference"
+  hostname: "visaris-rm2"
+  namespace: "visaris-rm2"
+

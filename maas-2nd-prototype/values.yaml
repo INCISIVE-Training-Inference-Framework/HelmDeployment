@@ -1,0 +1,19 @@
+prototypeSignature: "-2nd-prototype"
+
+componentsImageRepository: "incisive.azurecr.io"
+databaseUsername: "databaseUsername"
+databasePassword: "databasePassword"
+serviceSecretKey: "serviceSecretKey"
+storageClassName: "managed-premium"
+imagePullSecretName: "incisive-azurecrio-secret"
+maxModelSize: "1000"  # MB
+
+maasImageVersion: "2.1.1"
+
+# MaaS gunicorn execution parameter values
+maasWorkers: "3"
+maasWorkersTimeout: "60"
+
+# Local inference values
+localInference:
+  enabled: false

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: maas-service-files-storage{{ .Values.prototypeSignature }}
+  labels:
+    app: maas{{ .Values.prototypeSignature }}
+    module: maas-service{{ .Values.prototypeSignature }}
+spec:
+  {{- if eq .Values.localInference.enabled true }}
+  {{- with .Values.localInference }}
+  storageClassName: maas-local-storage
+  volumeName: maas-service-pv-{{ .hostname }}
+  {{- end }}
+  {{- else }}
+  storageClassName: {{ .Values.storageClassName }}
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---

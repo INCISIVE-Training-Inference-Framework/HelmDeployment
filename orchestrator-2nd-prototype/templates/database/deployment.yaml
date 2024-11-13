@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orchestrator-database{{ .Values.prototypeSignature }}
+  labels:
+    app: orchestrator{{ .Values.prototypeSignature }}
+    module: orchestrator-database{{ .Values.prototypeSignature }}
+spec:
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      module: orchestrator-database{{ .Values.prototypeSignature }}
+  template:
+    metadata:
+      labels:
+        module: orchestrator-database{{ .Values.prototypeSignature }}
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:12.14
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: orchestrator-database-secret{{ .Values.prototypeSignature }}
+            - configMapRef:
+                name: orchestrator-database-config{{ .Values.prototypeSignature }}
+          volumeMounts:
+            - name: orchestrator-database-volume
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              cpu: 125m
+              memory: 500Mi
+            limits:
+              cpu: 1000m
+              memory: 500Mi
+      volumes:
+        - name: orchestrator-database-volume
+          persistentVolumeClaim:
+            claimName: orchestrator-database-storage-claim{{ .Values.prototypeSignature }}

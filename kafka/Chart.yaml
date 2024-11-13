@@ -1,0 +1,10 @@
+apiVersion: v2
+name: strimzi
+version: 1.0
+description: The Kafka component of the INCISIVE platform. It is the one in charge of providing the platform to the AI Engines to communicate during the parallel training.
+type: application
+appVersion: "1.0"
+dependencies:
+- name: strimzi-kafka-operator
+  version: "0.38.0"
+  repository: "oci://quay.io/strimzi-helm/"

@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orchestrator-service{{ .Values.prototypeSignature }}
+  labels:
+    app: orchestrator{{ .Values.prototypeSignature }}
+    module: orchestrator-service{{ .Values.prototypeSignature }}
+spec:
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      module: orchestrator-service{{ .Values.prototypeSignature }}
+  template:
+    metadata:
+      labels:
+        app: orchestrator{{ .Values.prototypeSignature }}
+        module: orchestrator-service{{ .Values.prototypeSignature }}
+    spec:
+      serviceAccountName: orchestrator-service-account{{ .Values.prototypeSignature }}
+      containers:
+        - name: orchestrator-service-main
+          image: "{{ .Values.componentsImageRepository }}/orchestrator:{{ .Values.orchestratorImageVersion }}"
+          envFrom:
+            - secretRef:
+                name: orchestrator-service-secret{{ .Values.prototypeSignature }}
+            - configMapRef:
+                name: orchestrator-service-config{{ .Values.prototypeSignature }}
+          ports:
+            - name: port
+              containerPort: 8000
+          volumeMounts:
+            - name: file-storage
+              mountPath: /usr/application/storage
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+      initContainers:
+        - name: orchestrator-service-migrate
+          image: "{{ .Values.componentsImageRepository }}/orchestrator:{{ .Values.orchestratorImageVersion }}"
+          command: ["python3", "manage.py", "migrate"]
+          envFrom:
+            - secretRef:
+                name: orchestrator-service-secret{{ .Values.prototypeSignature }}
+            - configMapRef:
+                name: orchestrator-service-config{{ .Values.prototypeSignature }}
+          volumeMounts:
+            - name: file-storage
+              mountPath: /usr/application/storage
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+      volumes:
+        - name: file-storage
+          persistentVolumeClaim:
+            claimName: orchestrator-service-storage-claim{{ .Values.prototypeSignature }}
